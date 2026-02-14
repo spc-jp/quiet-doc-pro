@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiet Doc Pro</title>
+    <style>
+        :root {
+            --primary-color: #5b8bd9;
+            --primary-hover: #4a7ac9;
+            --bg-color: #f0f4f8;
+            --card-bg: #ffffff;
+            --text-main: #333333;
+            --text-sub: #666666;
+            --border-color: #e1e4e8;
+            --success-color: #4caf50;
+            --error-color: #f44336;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            --radius: 12px;
+            --transition: all 0.2s ease;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        header {
+            background-color: var(--card-bg);
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+            text-align: center;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.2rem;
+        }
+
+        .sub-catch {
+            font-size: 0.9rem;
+            color: var(--text-sub);
+        }
+
+        /* Layout */
+        main {
+            flex: 1;
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            width: 100%;
+        }
+
+        @media (max-width: 768px) {
+            main {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+                margin: 1rem auto;
+            }
+        }
+
+        /* Components */
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section-desc {
+            font-size: 0.85rem;
+            color: var(--text-sub);
+            margin-bottom: 1rem;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            resize: vertical;
+            transition: var(--transition);
+            background-color: #fafafa;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            background-color: #fff;
+            box-shadow: 0 0 0 3px rgba(91, 139, 217, 0.1);
+        }
+
+        /* Left Column Specifics */
+        .input-area {
+            flex-grow: 1;
+            min-height: 200px;
+            margin-bottom: 1.5rem;
+        }
+
+        .rules-area {
+            min-height: 100px;
+            margin-bottom: 1.5rem;
+            font-family: monospace;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+        }
+
+        .btn {
+            padding: 0.8rem 1.2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+            transform: scale(0.98);
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            flex: 2;
+        }
+
+        .btn-secondary {
+            background-color: #eef2f6;
+            color: var(--text-sub);
+            border: 1px solid var(--border-color);
+            flex: 1;
+        }
+
+        .btn-secondary:hover {
+            background-color: #e1e4e8;
+            color: var(--text-main);
+        }
+
+        .pro-features {
+            background-color: #f8faff;
+            border: 1px solid #dae5f5;
+            padding: 1rem;
+            border-radius: 8px;
+        }
+
+        .pro-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 0.8rem;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .badge {
+            background: var(--primary-color);
+            color: white;
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .ai-btn-group {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.5rem;
+        }
+
+        .btn-ai {
+            background-color: white;
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+            font-size: 0.85rem;
+            padding: 0.6rem;
+        }
+
+        .btn-ai:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        /* Right Column Specifics */
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 1rem;
+        }
+
+        .tab {
+            padding: 0.8rem 1.2rem;
+            cursor: pointer;
+            color: var(--text-sub);
+            font-weight: 500;
+            position: relative;
+            transition: var(--transition);
+        }
+
+        .tab:hover {
+            color: var(--primary-color);
+        }
+
+        .tab.active {
+            color: var(--primary-color);
+        }
+
+        .tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: var(--primary-color);
+            border-radius: 3px 3px 0 0;
+        }
+
+        .tab-content {
+            display: none;
+            flex-grow: 1;
+            flex-direction: column;
+        }
+
+        .tab-content.active {
+            display: flex;
+        }
+
+        .output-area {
+            flex-grow: 1;
+            width: 100%;
+            min-height: 400px;
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background-color: #fafafa;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            font-size: 1rem;
+            color: var(--text-main);
+            position: relative;
+        }
+
+        .ai-status {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            padding: 2rem;
+            background: rgba(255,255,255,0.9);
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 10;
+            border-radius: 8px;
+        }
+
+        /* Spinner */
+        .spinner {
+            width: 24px;
+            height: 24px;
+            border: 3px solid #e1e4e8;
+            border-top-color: var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Copy Button */
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: white;
+            border: 1px solid var(--border-color);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            color: var(--text-sub);
+            transition: var(--transition);
+            opacity: 0.8;
+        }
+
+        .copy-btn:hover {
+            opacity: 1;
+            background-color: #f0f4f8;
+            color: var(--primary-color);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 1.5rem;
+            color: var(--text-sub);
+            font-size: 0.8rem;
+            margin-top: auto;
+        }
+
+        /* Toast Notification */
+        #toast-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .toast {
+            background: #333;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            font-size: 0.9rem;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: toastIn 0.3s forwards;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .toast.success { border-left: 4px solid var(--success-color); }
+        .toast.error { border-left: 4px solid var(--error-color); }
+
+        @keyframes toastIn {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes toastOut {
+            to { opacity: 0; transform: translateY(-20px); }
+        }
+
+        /* Utility */
+        .hidden { display: none !important; }
+        
+        .placeholder-text {
+            color: #aaa;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Quiet Doc Pro</h1>
+    <p class="sub-catch">外に出さずに整えて、必要な時だけAIに相談する。</p>
+</header>
+
+<main>
+    <!-- Left Column -->
+    <section class="left-col">
+        <div class="card">
+            <h2 class="section-title">📄 資料テキスト</h2>
+            <p class="section-desc">ここに文章を貼り付け。個人名などは下のルールで匿名化。</p>
+            <textarea id="inputText" class="input-area" placeholder="ここに資料の文章を貼り付けます。&#13;&#10;個人名や会社名が含まれる場合は、下の匿名化を使ってからAIに相談できます。"></textarea>
+
+            <h2 class="section-title">🔒 匿名化ルール (置換)</h2>
+            <textarea id="rulesText" class="rules-area" placeholder="例：&#13;&#10;山田太郎 => Aさん&#13;&#10;株式会社サンプル => 取引先A&#13;&#10;電話 => TEL"></textarea>
+
+            <div class="btn-group">
+                <button class="btn btn-primary" onclick="handleAnonymize()">
+                    <span>✨ 匿名化して整える</span>
+                </button>
+                <button class="btn btn-secondary" onclick="clearAll()">
+                    <span>🗑️ クリア</span>
+                </button>
+            </div>
+            
+            <div class="btn-group" style="margin-bottom: 0;">
+                <button class="btn btn-secondary" onclick="saveData()">
+                    <span>💾 ローカル保存</span>
+                </button>
+                <button class="btn btn-secondary" onclick="loadData()">
+                    <span>📂 読み込み</span>
+                </button>
+            </div>
+
+            <div style="margin-top: 1.5rem;" class="pro-features">
+                <div class="pro-title">
+                    <span>🤖 AIに相談 (Pro)</span>
+                    <span class="badge">匿名化後のみ</span>
+                </div>
+                <div class="ai-btn-group">
+                    <button class="btn btn btn-ai" onclick="askAI('summary3')">3行要約</button>
+                    <button class="btn btn btn-ai" onclick="askAI('risk3')">注意点3つ</button>
+                    <button class="btn btn btn-ai" onclick="askAI('idea3')">提案3つ</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Right Column -->
+    <section class="right-col">
+        <div class="card">
+            <div class="tabs">
+                <div class="tab active" onclick="switchTab('organized')">整えたテキスト</div>
+                <div class="tab" onclick="switchTab('ai')">AIの返答</div>
+                <div class="tab" onclick="switchTab('memo')">メモ</div>
+            </div>
+
+            <!-- Tab 1: Organized Text -->
+            <div id="tab-organized" class="tab-content active">
+                <div class="output-area" id="organizedOutput">
+                    <span class="placeholder-text">左側の「匿名化して整える」ボタンを押すと、ここに結果が表示されます。</span>
+                </div>
+                <button class="copy-btn" onclick="copyText('organizedOutput')">コピー</button>
+            </div>
+
+            <!-- Tab 2: AI Response -->
+            <div id="tab-ai" class="tab-content">
+                <div class="output-area" id="aiOutput">
+                    <span class="placeholder-text">AIへの相談結果がここに表示されます。</span>
+                </div>
+                <div id="aiStatus" class="ai-status">
+                    <div class="spinner"></div>
+                    <span>AIが考え中...</span>
+                </div>
+                <button class="copy-btn" onclick="copyText('aiOutput')">コピー</button>
+            </div>
+
+            <!-- Tab 3: Memo -->
+            <div id="tab-memo" class="tab-content">
+                <textarea id="memoText" class="output-area" style="border:none; resize:none; background:transparent;" placeholder="ここに自分のメモを残せます。ローカル保存ボタンで一緒に保存されます。"></textarea>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer>
+    <p>考えるを、ひとりにしない。SPC</p>
+</footer>
+
+<div id="toast-container"></div>
+
+<script>
+    // State & Constants
+    const STORAGE_KEY = 'quiet_doc_pro_data';
+    const API_ENDPOINT = '/api/ask';
+
+    // Elements
+    const inputText = document.getElementById('inputText');
+    const rulesText = document.getElementById('rulesText');
+    const organizedOutput = document.getElementById('organizedOutput');
+    const aiOutput = document.getElementById('aiOutput');
+    const memoText = document.getElementById('memoText');
+    const aiStatus = document.getElementById('aiStatus');
+
+    // Tab Switching
+    function switchTab(tabName) {
+        // Update Tabs
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        const activeTab = Array.from(document.querySelectorAll('.tab')).find(t => t.getAttribute('onclick').includes(tabName));
+        if (activeTab) activeTab.classList.add('active');
+
+        // Update Content
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        document.getElementById(`tab-${tabName}`).classList.add('active');
+    }
+
+    // Anonymize Logic
+    function handleAnonymize() {
+        const rawText = inputText.value;
+        const rules = rulesText.value;
+
+        if (!rawText.trim()) {
+            showToast('資料テキストを入力してください', 'error');
+            return;
+        }
+
+        let processedText = rawText;
+        let replaceCount = 0;
+
+        // Process Rules
+        const ruleLines = rules.split(/\n/);
+        ruleLines.forEach(line => {
+            if (line.includes('=>') || line.includes('＞')) {
+                const separator = line.includes('=>') ? '=>' : '＞';
+                const [target, replacement] = line.split(separator).map(s => s.trim());
+                
+                if (target && replacement) {
+                    // Create regex for global replacement, escaping special chars
+                    const escapedTarget = target.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                    const regex = new RegExp(escapedTarget, 'g');
+                    
+                    // Count matches for toast info (optional but nice)
+                    const matches = (processedText.match(regex) || []).length;
+                    replaceCount += matches;
+
+                    processedText = processedText.replace(regex, replacement);
+                }
+            }
+        });
+
+        // Set Output
+        organizedOutput.innerText = processedText;
+        organizedOutput.style.color = 'var(--text-main)'; // Remove placeholder color
+        
+        switchTab('organized');
+        showToast(`整えました（${replaceCount}箇所置換）`, 'success');
+    }
+
+    // Clear Logic
+    function clearAll() {
+        if(confirm('入力内容を全てクリアしますか？')) {
+            inputText.value = '';
+            rulesText.value = '';
+            organizedOutput.innerHTML = '<span class="placeholder-text">左側の「匿名化して整える」ボタンを押すと、ここに結果が表示されます。</span>';
+            aiOutput.innerHTML = '<span class="placeholder-text">AIへの相談結果がここに表示されます。</span>';
+            memoText.value = '';
+            showToast('クリアしました', 'success');
+        }
+    }
+
+    // Local Storage
+    function saveData() {
+        const data = {
+            input: inputText.value,
+            rules: rulesText.value,
+            memo: memoText.value,
+            timestamp: new Date().toLocaleString()
+        };
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        showToast('ブラウザに保存しました', 'success');
+    }
+
+    function loadData() {
+        const json = localStorage.getItem(STORAGE_KEY);
+        if (!json) {
+            showToast('保存されたデータがありません', 'error');
+            return;
+        }
+        try {
+            const data = JSON.parse(json);
+            inputText.value = data.input || '';
+            rulesText.value = data.rules || '';
+            memoText.value = data.memo || '';
+            showToast('データを読み込みました', 'success');
+            
+            // Re-run anonymize if input exists
+            if (inputText.value) {
+                // Just to update the view without notification spam, run logic silently or let user press button
+                // Here we simply let user know data is loaded.
+            }
+        } catch (e) {
+            showToast('データの読み込みに失敗しました', 'error');
+        }
+    }
+
+    // AI Interaction
+    async function askAI(mode) {
+        // Check if we have organized text
+        const currentText = organizedOutput.innerText;
+        if (!currentText || currentText.includes('左側の「匿名化して整える」ボタン')) {
+            showToast('先に「匿名化して整える」を実行してください', 'error');
+            switchTab('organized');
+            return;
+        }
+
+        switchTab('ai');
+        aiStatus.style.display = 'flex'; // Show spinner
+
+        const payload = {
+            mode: mode,
+            text: currentText
+        };
+
+        try {
+            // Simulated API Call
+            // Note: Since there is no backend, this fetch will fail (404/Network Error)
+            // We catch it and use "Demo Mode" as requested.
+            const response = await fetch(API_ENDPOINT, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            const data = await response.json();
+            if (data.ok) {
+                aiOutput.innerText = data.answer;
+                showToast('AIからの回答を受信しました', 'success');
+            } else {
+                throw new Error(data.error || 'Unknown error');
+            }
+
+        } catch (error) {
+            console.log('API connection failed, switching to demo mode:', error);
+            
+            // DEMO MODE FALLBACK
+            setTimeout(() => {
+                const demoResponse = generateDemoResponse(mode, currentText);
+                aiOutput.innerText = demoResponse;
+                showToast('デモモードで回答を作成しました', 'success');
+                aiStatus.style.display = 'none';
+            }, 1500); // 1.5s delay to simulate thinking
+            return;
+        }
+
+        aiStatus.style.display = 'none';
+    }
+
+    function generateDemoResponse(mode, text) {
+        const intro = "【デモモード回答】\nAPI未接続のため、フロントエンド側で生成したサンプル回答です。\n\n";
+        
+        if (mode === 'summary3') {
+            return intro + "1. 提供されたテキストはビジネス文書の構成を持っています。\n2. 匿名化された状態で、主要な要件や連絡事項が記載されています。\n3. 具体的なアクションプランまたは報告事項が含まれているようです。";
+        } else if (mode === 'risk3') {
+            return intro + "1. 【情報の曖昧さ】匿名化により文脈が伝わりにくい箇所がある可能性があります。\n2. 【期限の確認】テキスト内に具体的な期限が含まれているか再確認が必要です。\n3. 【責任の所在】誰がボールを持っているかが明確か確認してください。";
+        } else if (mode === 'idea3') {
+            return intro + "1. 文章を箇条書きに直すと、より視認性が高まります。\n2. 結論を最初に持ってくる構成（PREP法）への書き換えを検討してください。\n3. 次のアクションを太字で強調すると、相手に伝わりやすくなります。";
+        }
+        return intro + "解析を完了しました。";
+    }
+
+    // Utilities
+    function copyText(elementId) {
+        const el = document.getElementById(elementId);
+        let text = el.tagName === 'TEXTAREA' ? el.value : el.innerText;
+        
+        if (!text || text.includes('表示されます')) {
+            showToast('コピーする内容がありません', 'error');
+            return;
+        }
+
+        if (navigator.clipboard) {
+            navigator.clipboard.writeText(text).then(() => {
+                showToast('コピーしました', 'success');
+            }).catch(err => {
+                showToast('コピーに失敗しました', 'error');
+            });
+        } else {
+            // Fallback
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            showToast('コピーしました', 'success');
+        }
+    }
+
+    function showToast(message, type = 'success') {
+        const container = document.getElementById('toast-container');
+        const toast = document.createElement('div');
+        toast.className = `toast ${type}`;
+        
+        let icon = type === 'success' ? '✅' : '⚠️';
+        toast.innerHTML = `<span>${icon}</span><span>${message}</span>`;
+        
+        container.appendChild(toast);
+
+        // Remove after 3 seconds
+        setTimeout(() => {
+            toast.style.animation = 'toastOut 0.3s forwards';
+            setTimeout(() => {
+                if (container.contains(toast)) {
+                    container.removeChild(toast);
+                }
+            }, 300);
+        }, 3000);
+    }
+
+    // Initialize
+    window.onload = function() {
+        // Check for saved data on load (optional, auto-load disabled by default for privacy, but we can hint)
+        if (localStorage.getItem(STORAGE_KEY)) {
+            // Maybe show a gentle hint? For now, we wait for user to click "Load".
+        }
+    };
+
+</script>
+</body>
+</html>
