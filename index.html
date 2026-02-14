@@ -6,6 +6,7 @@
     <title>Quiet Doc Pro</title>
     <style>
         :root {
+            /* Light Theme (Default) */
             --primary-color: #5b8bd9;
             --primary-hover: #4a7ac9;
             --bg-color: #f0f4f8;
@@ -13,11 +14,29 @@
             --text-main: #333333;
             --text-sub: #666666;
             --border-color: #e1e4e8;
+            --input-bg: #fafafa;
+            --input-focus-bg: #ffffff;
             --success-color: #4caf50;
             --error-color: #f44336;
             --shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
             --radius: 12px;
             --transition: all 0.2s ease;
+            --modal-overlay: rgba(0, 0, 0, 0.4);
+        }
+
+        [data-theme="dark"] {
+            /* Dark Theme */
+            --primary-color: #6b9be9;
+            --primary-hover: #5a8ac9;
+            --bg-color: #1a1a1a;
+            --card-bg: #2d2d2d;
+            --text-main: #e0e0e0;
+            --text-sub: #a0a0a0;
+            --border-color: #444444;
+            --input-bg: #383838;
+            --input-focus-bg: #404040;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --modal-overlay: rgba(0, 0, 0, 0.7);
         }
 
         * {
@@ -34,6 +53,7 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
         /* Header */
@@ -41,7 +61,19 @@
             background-color: var(--card-bg);
             padding: 1rem 2rem;
             box-shadow: 0 2px 4px rgba(0,0,0,0.03);
-            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background-color 0.3s ease;
+        }
+
+        .header-left {
+            text-align: left;
+        }
+
+        .header-right {
+            display: flex;
+            gap: 1rem;
         }
 
         h1 {
@@ -54,6 +86,27 @@
         .sub-catch {
             font-size: 0.9rem;
             color: var(--text-sub);
+        }
+
+        .icon-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: var(--text-sub);
+            padding: 0.5rem;
+            border-radius: 50%;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+        }
+
+        .icon-btn:hover {
+            background-color: var(--bg-color);
+            color: var(--primary-color);
         }
 
         /* Layout */
@@ -74,6 +127,12 @@
                 gap: 1.5rem;
                 margin: 1rem auto;
             }
+            header {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+            .header-left { text-align: center; }
         }
 
         /* Components */
@@ -85,6 +144,7 @@
             display: flex;
             flex-direction: column;
             height: 100%;
+            transition: background-color 0.3s ease;
         }
 
         .section-title {
@@ -108,16 +168,17 @@
             padding: 1rem;
             border: 1px solid var(--border-color);
             border-radius: 8px;
-            font-size: 1rem;
+            font-size: 1rem; /* Prevent zoom on mobile */
             resize: vertical;
             transition: var(--transition);
-            background-color: #fafafa;
+            background-color: var(--input-bg);
+            color: var(--text-main);
         }
 
         textarea:focus {
             outline: none;
             border-color: var(--primary-color);
-            background-color: #fff;
+            background-color: var(--input-focus-bg);
             box-shadow: 0 0 0 3px rgba(91, 139, 217, 0.1);
         }
 
@@ -153,6 +214,8 @@
             align-items: center;
             justify-content: center;
             gap: 0.5rem;
+            user-select: none;
+            white-space: nowrap; /* テキストの折り返しを禁止 */
         }
 
         .btn:hover {
@@ -165,6 +228,15 @@
             transform: scale(0.98);
         }
 
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+            box-shadow: none !important;
+            background-color: var(--border-color);
+            color: var(--text-sub);
+        }
+
         .btn-primary {
             background-color: var(--primary-color);
             color: white;
@@ -172,20 +244,20 @@
         }
 
         .btn-secondary {
-            background-color: #eef2f6;
+            background-color: var(--bg-color);
             color: var(--text-sub);
             border: 1px solid var(--border-color);
             flex: 1;
         }
 
         .btn-secondary:hover {
-            background-color: #e1e4e8;
+            background-color: var(--border-color);
             color: var(--text-main);
         }
 
         .pro-features {
-            background-color: #f8faff;
-            border: 1px solid #dae5f5;
+            background-color: rgba(91, 139, 217, 0.05); /* Light blue tint */
+            border: 1px solid var(--border-color);
             padding: 1rem;
             border-radius: 8px;
         }
@@ -214,16 +286,26 @@
         }
 
         .btn-ai {
-            background-color: white;
+            background-color: var(--card-bg);
             border: 1px solid var(--primary-color);
             color: var(--primary-color);
             font-size: 0.85rem;
             padding: 0.6rem;
+            cursor: pointer;
+            transition: var(--transition);
         }
 
         .btn-ai:hover {
             background-color: var(--primary-color);
             color: white;
+        }
+        
+        .btn-ai:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            background-color: var(--bg-color);
+            border-color: var(--border-color);
+            color: var(--text-sub);
         }
 
         /* Right Column Specifics */
@@ -278,12 +360,13 @@
             padding: 1.5rem;
             border: 1px solid var(--border-color);
             border-radius: 8px;
-            background-color: #fafafa;
+            background-color: var(--input-bg);
             overflow-y: auto;
             white-space: pre-wrap;
             font-size: 1rem;
             color: var(--text-main);
             position: relative;
+            transition: background-color 0.3s ease;
         }
 
         .ai-status {
@@ -292,7 +375,8 @@
             justify-content: center;
             gap: 0.8rem;
             padding: 2rem;
-            background: rgba(255,255,255,0.9);
+            background: var(--card-bg);
+            opacity: 0.95;
             position: absolute;
             top: 0;
             left: 0;
@@ -306,7 +390,7 @@
         .spinner {
             width: 24px;
             height: 24px;
-            border: 3px solid #e1e4e8;
+            border: 3px solid var(--border-color);
             border-top-color: var(--primary-color);
             border-radius: 50%;
             animation: spin 1s linear infinite;
@@ -321,7 +405,7 @@
             position: absolute;
             top: 10px;
             right: 10px;
-            background: white;
+            background: var(--card-bg);
             border: 1px solid var(--border-color);
             padding: 4px 8px;
             border-radius: 4px;
@@ -330,11 +414,12 @@
             color: var(--text-sub);
             transition: var(--transition);
             opacity: 0.8;
+            z-index: 5;
         }
 
         .copy-btn:hover {
             opacity: 1;
-            background-color: #f0f4f8;
+            background-color: var(--bg-color);
             color: var(--primary-color);
         }
 
@@ -384,6 +469,162 @@
             to { opacity: 0; transform: translateY(-20px); }
         }
 
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--modal-overlay);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: var(--radius);
+            width: 90%;
+            max-width: 500px;
+            box-shadow: var(--shadow);
+            position: relative;
+            transform: translateY(20px);
+            transition: all 0.2s ease;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-overlay.active .modal {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-sub);
+        }
+
+        .modal-body h3 {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+
+        .modal-body ul {
+            list-style-type: none;
+            padding-left: 0;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-body li {
+            position: relative;
+            padding-left: 1.2rem;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+            color: var(--text-main);
+        }
+
+        .modal-body li::before {
+            content: "•";
+            color: var(--primary-color);
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+
+        .setting-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .setting-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-main);
+            font-weight: 600;
+        }
+
+        .theme-options {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .theme-btn {
+            flex: 1;
+            padding: 0.6rem;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background: var(--input-bg);
+            color: var(--text-main);
+            cursor: pointer;
+            text-align: center;
+        }
+        
+        .theme-btn.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .modal-footer-actions {
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            align-items: center;
+        }
+
+        .text-link-btn {
+            background: none;
+            border: none;
+            color: var(--text-sub);
+            font-size: 0.85rem;
+            cursor: pointer;
+            text-decoration: underline;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+        }
+
+        .text-link-btn:hover {
+            opacity: 1;
+            color: var(--text-main);
+        }
+
+        /* Confirm Modal specific */
+        .confirm-btn-group {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
         /* Utility */
         .hidden { display: none !important; }
         
@@ -396,8 +637,18 @@
 <body>
 
 <header>
-    <h1>Quiet Doc Pro</h1>
-    <p class="sub-catch">外に出さずに整えて、必要な時だけAIに相談する。</p>
+    <div class="header-left">
+        <h1>Quiet Doc Pro</h1>
+        <p class="sub-catch">外に出さずに整えて、必要な時だけAIに相談する。</p>
+    </div>
+    <div class="header-right">
+        <button class="icon-btn" onclick="openModal('helpModal')" title="使い方">
+            ?
+        </button>
+        <button class="icon-btn" onclick="openModal('settingsModal')" title="設定">
+            ⚙️
+        </button>
+    </div>
 </header>
 
 <main>
@@ -415,8 +666,8 @@
                 <button class="btn btn-primary" onclick="handleAnonymize()">
                     <span>✨ 匿名化して整える</span>
                 </button>
-                <button class="btn btn-secondary" onclick="clearAll()">
-                    <span>🗑️ クリア</span>
+                <button class="btn btn-secondary" onclick="confirmClearAll()">
+                    <span>🗑️ 入力クリア</span>
                 </button>
             </div>
             
@@ -484,12 +735,78 @@
     <p>考えるを、ひとりにしない。SPC</p>
 </footer>
 
+<!-- Help Modal -->
+<div id="helpModal" class="modal-overlay" onclick="closeModal('helpModal')">
+    <div class="modal" onclick="event.stopPropagation()">
+        <div class="modal-header">
+            <div class="modal-title">使い方ガイド</div>
+            <button class="close-modal" onclick="closeModal('helpModal')">×</button>
+        </div>
+        <div class="modal-body">
+            <h3>📌 目的</h3>
+            <p style="margin-bottom: 1.5rem; color: var(--text-sub);">
+                社内文書や個人情報を含むテキストを、安全に匿名化して整理し、AI等の外部ツールで扱いやすくするために使用します。データはブラウザ内にのみ保存されます。
+            </p>
+            <h3>📝 使い方</h3>
+            <ul>
+                <li>「資料テキスト」に整理したい文章を貼り付けます。</li>
+                <li>「匿名化ルール」に置き換えたい単語を入力します（例：田中 => Aさん）。</li>
+                <li>「匿名化して整える」ボタンを押すと、右側に処理結果が表示されます。</li>
+                <li>匿名化された安全なテキストを使って、下のPro機能からAIに要約や提案を依頼できます。</li>
+                <li>作業内容は「ローカル保存」でブラウザに一時保存できます。</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Settings Modal -->
+<div id="settingsModal" class="modal-overlay" onclick="closeModal('settingsModal')">
+    <div class="modal" onclick="event.stopPropagation()">
+        <div class="modal-header">
+            <div class="modal-title">設定</div>
+            <button class="close-modal" onclick="closeModal('settingsModal')">×</button>
+        </div>
+        <div class="modal-body">
+            <div class="setting-group">
+                <label class="setting-label">色合い</label>
+                <div class="theme-options">
+                    <button class="theme-btn active" id="themeLight" onclick="setTheme('light')">ライト</button>
+                    <button class="theme-btn" id="themeDark" onclick="setTheme('dark')">ダーク</button>
+                </div>
+            </div>
+            
+            <div class="modal-footer-actions">
+                <button class="text-link-btn" onclick="confirmLoadDemo()">デモデータを読み込む</button>
+                <button class="text-link-btn" onclick="confirmClearEverything()" style="color: var(--error-color);">全てのデータをクリア</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Confirm Modal (New) -->
+<div id="confirmModal" class="modal-overlay">
+    <div class="modal" style="max-width: 400px; text-align: center;" onclick="event.stopPropagation()">
+        <h3 id="confirmTitle" style="margin-bottom: 1rem; color: var(--text-main);">確認</h3>
+        <p id="confirmMessage" style="margin-bottom: 2rem; color: var(--text-sub);">本当によろしいですか？</p>
+        <div class="confirm-btn-group">
+            <button class="btn btn-secondary" onclick="closeConfirm(false)" style="flex:1;">キャンセル</button>
+            <button class="btn btn-primary" id="confirmOkBtn" style="flex:1;">実行する</button>
+        </div>
+    </div>
+</div>
+
 <div id="toast-container"></div>
 
 <script>
     // State & Constants
     const STORAGE_KEY = 'quiet_doc_pro_data';
-    const API_ENDPOINT = '/api/ask';
+    const THEME_KEY = 'quiet_doc_pro_theme';
+    
+    // Netlify Functionsを使う場合は、/.netlify/functions/ask などを指定
+    // 現在はプレースホルダーとして /api/ask を設定
+    const API_ENDPOINT = '/api/ask'; 
+    
+    let isProcessing = false; // Processing Flag
 
     // Elements
     const inputText = document.getElementById('inputText');
@@ -499,14 +816,62 @@
     const memoText = document.getElementById('memoText');
     const aiStatus = document.getElementById('aiStatus');
 
+    // Modal Logic
+    function openModal(modalId) {
+        document.getElementById(modalId).classList.add('active');
+    }
+
+    function closeModal(modalId) {
+        document.getElementById(modalId).classList.remove('active');
+    }
+
+    // Custom Confirm Logic
+    let confirmCallback = null;
+
+    function showConfirm(title, message, callback) {
+        document.getElementById('confirmTitle').innerText = title;
+        document.getElementById('confirmMessage').innerText = message;
+        confirmCallback = callback;
+        
+        const okBtn = document.getElementById('confirmOkBtn');
+        okBtn.onclick = function() {
+            closeConfirm(true);
+        };
+
+        openModal('confirmModal');
+    }
+
+    function closeConfirm(isOk) {
+        document.getElementById('confirmModal').classList.remove('active');
+        if (isOk && confirmCallback) {
+            confirmCallback();
+        }
+        confirmCallback = null;
+    }
+
+    // Theme Logic
+    function setTheme(theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+        localStorage.setItem(THEME_KEY, theme);
+        
+        if (theme === 'dark') {
+            document.getElementById('themeDark').classList.add('active');
+            document.getElementById('themeLight').classList.remove('active');
+        } else {
+            document.getElementById('themeLight').classList.add('active');
+            document.getElementById('themeDark').classList.remove('active');
+        }
+    }
+
+    const savedTheme = localStorage.getItem(THEME_KEY) || 'light';
+    setTheme(savedTheme);
+
     // Tab Switching
     function switchTab(tabName) {
-        // Update Tabs
         document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
         const activeTab = Array.from(document.querySelectorAll('.tab')).find(t => t.getAttribute('onclick').includes(tabName));
         if (activeTab) activeTab.classList.add('active');
 
-        // Update Content
         document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
         document.getElementById(`tab-${tabName}`).classList.add('active');
     }
@@ -524,7 +889,6 @@
         let processedText = rawText;
         let replaceCount = 0;
 
-        // Process Rules
         const ruleLines = rules.split(/\n/);
         ruleLines.forEach(line => {
             if (line.includes('=>') || line.includes('＞')) {
@@ -532,11 +896,9 @@
                 const [target, replacement] = line.split(separator).map(s => s.trim());
                 
                 if (target && replacement) {
-                    // Create regex for global replacement, escaping special chars
                     const escapedTarget = target.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
                     const regex = new RegExp(escapedTarget, 'g');
                     
-                    // Count matches for toast info (optional but nice)
                     const matches = (processedText.match(regex) || []).length;
                     replaceCount += matches;
 
@@ -545,24 +907,23 @@
             }
         });
 
-        // Set Output
         organizedOutput.innerText = processedText;
-        organizedOutput.style.color = 'var(--text-main)'; // Remove placeholder color
+        organizedOutput.style.color = 'var(--text-main)'; 
         
         switchTab('organized');
         showToast(`整えました（${replaceCount}箇所置換）`, 'success');
     }
 
     // Clear Logic
-    function clearAll() {
-        if(confirm('入力内容を全てクリアしますか？')) {
+    function confirmClearAll() {
+        showConfirm('入力クリア', '入力内容をクリアしますか？', () => {
             inputText.value = '';
             rulesText.value = '';
             organizedOutput.innerHTML = '<span class="placeholder-text">左側の「匿名化して整える」ボタンを押すと、ここに結果が表示されます。</span>';
             aiOutput.innerHTML = '<span class="placeholder-text">AIへの相談結果がここに表示されます。</span>';
             memoText.value = '';
-            showToast('クリアしました', 'success');
-        }
+            showToast('入力をクリアしました', 'success');
+        });
     }
 
     // Local Storage
@@ -589,20 +950,74 @@
             rulesText.value = data.rules || '';
             memoText.value = data.memo || '';
             showToast('データを読み込みました', 'success');
-            
-            // Re-run anonymize if input exists
-            if (inputText.value) {
-                // Just to update the view without notification spam, run logic silently or let user press button
-                // Here we simply let user know data is loaded.
-            }
         } catch (e) {
             showToast('データの読み込みに失敗しました', 'error');
         }
     }
 
+    // Demo Data
+    function confirmLoadDemo() {
+        showConfirm('デモデータ', '現在の入力を破棄して、デモデータを読み込みますか？', () => {
+            inputText.value = `議事録
+日時：2023年10月5日
+参加者：山田太郎、鈴木一郎、佐藤花子（株式会社サンプル）
+
+内容：
+株式会社サンプルの佐藤氏より、次期プロジェクト「X-100」の提案があった。
+予算感については要調整。山田が来週までに社内決裁をとる予定。
+鈴木は技術要件の整理を担当する。
+電話（03-1234-5678）にて詳細確認予定。`;
+            
+            rulesText.value = `山田太郎 => Aさん
+鈴木一郎 => Bさん
+佐藤花子 => C氏
+株式会社サンプル => 取引先S社
+X-100 => 新規PJ
+03-1234-5678 => TEL`;
+
+            memoText.value = `メモ：
+・Aさんの決裁スケジュール確認が必要
+・Bさんの技術調査待ち`;
+
+            closeModal('settingsModal');
+            showToast('デモデータを読み込みました', 'success');
+            handleAnonymize(); 
+        });
+    }
+
+    // Clear Everything
+    function confirmClearEverything() {
+        showConfirm('全削除', '保存データも含めて全て消去して初期化します。よろしいですか？', () => {
+            localStorage.removeItem(STORAGE_KEY);
+            inputText.value = '';
+            rulesText.value = '';
+            memoText.value = '';
+            organizedOutput.innerHTML = '<span class="placeholder-text">左側の「匿名化して整える」ボタンを押すと、ここに結果が表示されます。</span>';
+            aiOutput.innerHTML = '<span class="placeholder-text">AIへの相談結果がここに表示されます。</span>';
+            closeModal('settingsModal');
+            showToast('全データを消去してリセットしました', 'success');
+        });
+    }
+
+    // Helper: Toggle Controls
+    function setProcessingState(processing) {
+        isProcessing = processing;
+        aiStatus.style.display = processing ? 'flex' : 'none';
+        
+        // Disable all buttons to prevent double submission
+        document.querySelectorAll('button').forEach(btn => {
+            if (processing) {
+                btn.disabled = true;
+            } else {
+                btn.disabled = false;
+            }
+        });
+    }
+
     // AI Interaction
     async function askAI(mode) {
-        // Check if we have organized text
+        if (isProcessing) return;
+
         const currentText = organizedOutput.innerText;
         if (!currentText || currentText.includes('左側の「匿名化して整える」ボタン')) {
             showToast('先に「匿名化して整える」を実行してください', 'error');
@@ -611,7 +1026,7 @@
         }
 
         switchTab('ai');
-        aiStatus.style.display = 'flex'; // Show spinner
+        setProcessingState(true); // Lock UI
 
         const payload = {
             mode: mode,
@@ -620,47 +1035,54 @@
 
         try {
             // Simulated API Call
-            // Note: Since there is no backend, this fetch will fail (404/Network Error)
-            // We catch it and use "Demo Mode" as requested.
+            // 実際は Netlify Functions などへPOSTする
             const response = await fetch(API_ENDPOINT, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
             });
 
+            // Status check (Netlify Functions may return 500 or 502)
+            if (!response.ok) {
+                throw new Error(`Server status: ${response.status}`);
+            }
+
             const data = await response.json();
             if (data.ok) {
                 aiOutput.innerText = data.answer;
                 showToast('AIからの回答を受信しました', 'success');
             } else {
-                throw new Error(data.error || 'Unknown error');
+                throw new Error(data.error || 'Unknown application error');
             }
 
         } catch (error) {
-            console.log('API connection failed, switching to demo mode:', error);
+            console.log('API connection failed or demo mode active:', error);
             
-            // DEMO MODE FALLBACK
+            // Demo fallback logic
+            // 本番環境で「意図しないAPIエラー」の時もここに来るので、
+            // 実際はエラー内容によって分岐しても良い
+            
             setTimeout(() => {
                 const demoResponse = generateDemoResponse(mode, currentText);
                 aiOutput.innerText = demoResponse;
                 showToast('デモモードで回答を作成しました', 'success');
-                aiStatus.style.display = 'none';
-            }, 1500); // 1.5s delay to simulate thinking
+                setProcessingState(false); // Unlock UI inside timeout
+            }, 1500); 
             return;
         }
 
-        aiStatus.style.display = 'none';
+        setProcessingState(false); // Unlock UI (Success case)
     }
 
     function generateDemoResponse(mode, text) {
-        const intro = "【デモモード回答】\nAPI未接続のため、フロントエンド側で生成したサンプル回答です。\n\n";
+        const intro = "【デモモード回答】\nAPI未接続、またはエラーのためデモ回答を表示しています。\n\n";
         
         if (mode === 'summary3') {
-            return intro + "1. 提供されたテキストはビジネス文書の構成を持っています。\n2. 匿名化された状態で、主要な要件や連絡事項が記載されています。\n3. 具体的なアクションプランまたは報告事項が含まれているようです。";
+            return intro + "1. 取引先S社より新規PJの提案を受領しました。\n2. 予算承認のため、Aさんが来週までに社内決裁を進めます。\n3. 技術要件はBさんが担当し、TELにて詳細を詰める予定です。";
         } else if (mode === 'risk3') {
-            return intro + "1. 【情報の曖昧さ】匿名化により文脈が伝わりにくい箇所がある可能性があります。\n2. 【期限の確認】テキスト内に具体的な期限が含まれているか再確認が必要です。\n3. 【責任の所在】誰がボールを持っているかが明確か確認してください。";
+            return intro + "1. 【決裁スケジュール】来週までの決裁が遅れるとPJ開始に影響する可能性があります。\n2. 【要件定義】技術要件の整理前に予算を確定させるリスクがあります。\n3. 【コミュニケーション】TELでの確認内容は、必ずログ（議事録）に残すべきです。";
         } else if (mode === 'idea3') {
-            return intro + "1. 文章を箇条書きに直すと、より視認性が高まります。\n2. 結論を最初に持ってくる構成（PREP法）への書き換えを検討してください。\n3. 次のアクションを太字で強調すると、相手に伝わりやすくなります。";
+            return intro + "1. スケジュールを可視化して共有すると、Aさんの決裁承認がスムーズになります。\n2. 技術的な懸念点は、早めにC氏へ質問状として送付することを推奨します。\n3. 次回の打ち合わせ日程をこの場で仮押さえしておくと効率的です。";
         }
         return intro + "解析を完了しました。";
     }
@@ -703,7 +1125,6 @@
         
         container.appendChild(toast);
 
-        // Remove after 3 seconds
         setTimeout(() => {
             toast.style.animation = 'toastOut 0.3s forwards';
             setTimeout(() => {
@@ -716,9 +1137,8 @@
 
     // Initialize
     window.onload = function() {
-        // Check for saved data on load (optional, auto-load disabled by default for privacy, but we can hint)
         if (localStorage.getItem(STORAGE_KEY)) {
-            // Maybe show a gentle hint? For now, we wait for user to click "Load".
+            console.log('Found saved data.');
         }
     };
 
